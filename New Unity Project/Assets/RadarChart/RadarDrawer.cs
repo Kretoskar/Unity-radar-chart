@@ -22,6 +22,14 @@ public class RadarDrawer
     
     public void Draw()
     {
+        float radarItemsMaxValue = Mathf.NegativeInfinity;
+        
+        foreach (var radarItem in radarItems)
+        {
+            if (radarItem.Value > radarItemsMaxValue)
+                radarItemsMaxValue = radarItem.Value;
+        }
+        
         int count = radarItems.Count;
         
         Mesh mesh = new Mesh();
@@ -37,7 +45,8 @@ public class RadarDrawer
         for (int i = 0; i < count; i++)
         {
             float newAngle = angle * (i);
-            vertices[i + 1] = new Vector3(radius * Mathf.Cos(newAngle), radius * Mathf.Sin(newAngle));
+            float newRadius = radius * (radarItems[i].Value / radarItemsMaxValue);
+            vertices[i + 1] = new Vector3(newRadius * Mathf.Cos(newAngle), newRadius * Mathf.Sin(newAngle));
         }
 
         for (int i = 0; i < count - 1; i++)

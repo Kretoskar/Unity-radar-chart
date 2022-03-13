@@ -18,7 +18,7 @@ namespace RadarChart
             canvasRenderer = GetComponent<CanvasRenderer>();
         }
 
-        private void Start()
+        private void Update()
         {
             RadarDrawer radarDrawer = new RadarDrawer(canvasRenderer, radarItems, radius, material);
             radarDrawer.Draw();

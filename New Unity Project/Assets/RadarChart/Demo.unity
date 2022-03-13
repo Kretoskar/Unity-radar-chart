@@ -544,70 +544,19 @@ MonoBehaviour:
   radarItems:
   - name: abc
     description: 
-    value: 0
+    value: 10
   - name: def
     description: 
-    value: 0
+    value: 10
   - name: ghi
     description: 
-    value: 0
+    value: 10
   - name: ghi
     description: 
-    value: 0
+    value: 10
   - name: ghi
     description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
-  - name: ghi
-    description: 
-    value: 0
+    value: 10
   radius: 100
   canvasRenderer: {fileID: 976625092}
 --- !u!222 &976625092
