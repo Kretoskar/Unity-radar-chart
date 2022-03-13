@@ -22,29 +22,19 @@ public class RadarDrawer
     
     public void Draw()
     {
-        float radarItemsMaxValue = Mathf.NegativeInfinity;
-        
-        foreach (var radarItem in radarItems)
-        {
-            if (radarItem.Value > radarItemsMaxValue)
-                radarItemsMaxValue = radarItem.Value;
-        }
-        
         int count = radarItems.Count;
-        
-        Mesh mesh = new Mesh();
+        float radarItemsMaxValue = GetRadarItemsMaxValue();
+        float angle = 2f * Mathf.PI/count;
 
         Vector3[] vertices = new Vector3[count + 1];
         Vector2[] uv = new Vector2[count + 1];
         int[] triangles = new int[3 * count];
 
-        float angle = 2f * Mathf.PI/count;
-
         vertices[0] = Vector3.zero;
-        
+
         for (int i = 0; i < count; i++)
         {
-            float newAngle = angle * (i);
+            float newAngle = angle * i;
             float newRadius = radius * (radarItems[i].Value / radarItemsMaxValue);
             vertices[i + 1] = new Vector3(newRadius * Mathf.Cos(newAngle), newRadius * Mathf.Sin(newAngle));
         }
@@ -60,11 +50,28 @@ public class RadarDrawer
         triangles[3 * count - 2] = count;
         triangles[3 * count - 1] = 1;
 
-        mesh.vertices = vertices;
-        mesh.uv = uv;
-        mesh.triangles = triangles;
+        Mesh mesh = new Mesh
+        {
+            vertices = vertices,
+            uv = uv,
+            triangles = triangles
+        };
 
         canvasRenderer.SetMesh(mesh);
         canvasRenderer.SetMaterial(material, null);
+    }
+
+    private float GetRadarItemsMaxValue()
+    {
+        float radarItemsMaxValue = Mathf.NegativeInfinity;
+
+        for (var i = 0; i < radarItems.Count; i++)
+        {
+            var radarItem = radarItems[i];
+            if (radarItem.Value > radarItemsMaxValue)
+                radarItemsMaxValue = radarItem.Value;
+        }
+
+        return radarItemsMaxValue;
     }
 }
