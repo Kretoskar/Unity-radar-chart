@@ -12,6 +12,7 @@ namespace RadarChart
         [SerializeField] private float radius = 1;
         [SerializeField] private Vector2 textureTiling = Vector2.one;
         [SerializeField] private Vector2 textureOffset;
+        [SerializeField] private bool isGradient;
         [SerializeField] private List<RadarItem> radarItems;
 
         [SerializeField, HideInInspector] private CanvasRenderer canvasRenderer;
@@ -23,7 +24,7 @@ namespace RadarChart
 
         private void Update()
         {
-            RadarDrawer radarDrawer = new RadarDrawer(canvasRenderer, radarItems, radius, material, texture, textureTiling, textureOffset);
+            RadarDrawer radarDrawer = new RadarDrawer(canvasRenderer, radarItems, radius, material, texture, textureTiling, textureOffset, isGradient);
             radarDrawer.Draw();
         }
     }

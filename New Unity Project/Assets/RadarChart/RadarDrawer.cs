@@ -14,9 +14,10 @@ public class RadarDrawer
     private float radius;
     private Vector2 textureTiling;
     private Vector2 textureOffset;
-
+    private bool isGradient;
+    
     public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, float radius, Material material,
-        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset)
+        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset, bool isGradient)
     {
         this.material = material;
         this.canvasRenderer = canvasRenderer;
@@ -25,6 +26,7 @@ public class RadarDrawer
         this.texture = texture;
         this.textureTiling = textureTiling;
         this.textureOffset = textureOffset;
+        this.isGradient = isGradient;
     }
     
     public void Draw()
@@ -77,12 +79,23 @@ public class RadarDrawer
 
         float boundsX = Mathf.Abs(minX) + Mathf.Abs(maxX);
         float boundsY = Mathf.Abs(minY) + Mathf.Abs(maxY);
-        
+
         //UVs
-        for (int i = 0; i < vertices.Length; i++)
+        if (isGradient)
         {
-            uvs[i] = new Vector2(vertices[i].x / boundsX * textureTiling.x - (textureOffset.x + 0.5f), 
-                vertices[i].y / boundsY * textureTiling.y - (textureOffset.y + 0.5f));
+            uvs[0] = Vector2.zero;
+            for (int i = 1; i < uvs.Length; i++)
+            {
+                uvs[i] = Vector2.one;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                uvs[i] = new Vector2(vertices[i].x / boundsX * textureTiling.x - (textureOffset.x),
+                    vertices[i].y / boundsY * textureTiling.y - (textureOffset.y));
+            }
         }
 
         Mesh mesh = new Mesh
