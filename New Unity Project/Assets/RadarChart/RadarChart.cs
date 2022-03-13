@@ -8,8 +8,11 @@ namespace RadarChart
     public class RadarChart : MonoBehaviour
     {
         [SerializeField] private Material material;
-        [SerializeField] private List<RadarItem> radarItems;
+        [SerializeField] private Texture2D texture;
         [SerializeField] private float radius = 1;
+        [SerializeField] private Vector2 textureTiling = Vector2.one;
+        [SerializeField] private Vector2 textureOffset;
+        [SerializeField] private List<RadarItem> radarItems;
 
         [SerializeField, HideInInspector] private CanvasRenderer canvasRenderer;
 
@@ -20,7 +23,7 @@ namespace RadarChart
 
         private void Update()
         {
-            RadarDrawer radarDrawer = new RadarDrawer(canvasRenderer, radarItems, radius, material);
+            RadarDrawer radarDrawer = new RadarDrawer(canvasRenderer, radarItems, radius, material, texture, textureTiling, textureOffset);
             radarDrawer.Draw();
         }
     }

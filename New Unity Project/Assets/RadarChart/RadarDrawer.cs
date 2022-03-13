@@ -8,16 +8,23 @@ using UnityEngine;
 public class RadarDrawer
 {
     private Material material;
+    private Texture2D texture;
     private CanvasRenderer canvasRenderer;
     private List<RadarItem> radarItems;
     private float radius;
+    private Vector2 textureTiling;
+    private Vector2 textureOffset;
 
-    public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, float radius, Material material)
+    public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, float radius, Material material,
+        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset)
     {
         this.material = material;
         this.canvasRenderer = canvasRenderer;
         this.radarItems = radarItems;
         this.radius = radius;
+        this.texture = texture;
+        this.textureTiling = textureTiling;
+        this.textureOffset = textureOffset;
     }
     
     public void Draw()
@@ -25,20 +32,38 @@ public class RadarDrawer
         int count = radarItems.Count;
         float radarItemsMaxValue = GetRadarItemsMaxValue();
         float angle = 2f * Mathf.PI/count;
+        
+        float minX = Mathf.Infinity;
+        float maxX = Mathf.NegativeInfinity;
+        
+        float minY = Mathf.Infinity;
+        float maxY = Mathf.NegativeInfinity;
 
         Vector3[] vertices = new Vector3[count + 1];
-        Vector2[] uv = new Vector2[count + 1];
+        Vector2[] uvs = new Vector2[count + 1];
         int[] triangles = new int[3 * count];
 
+        //vertices
         vertices[0] = Vector3.zero;
-
+        
         for (int i = 0; i < count; i++)
         {
             float newAngle = angle * i;
             float newRadius = radius * (radarItems[i].Value / radarItemsMaxValue);
-            vertices[i + 1] = new Vector3(newRadius * Mathf.Cos(newAngle), newRadius * Mathf.Sin(newAngle));
+            
+            float x = newRadius * Mathf.Cos(newAngle);
+            float y = newRadius * Mathf.Sin(newAngle);
+
+            if (x > maxX) maxX = x;
+            if (x < minX) minX = x;
+
+            if (y > maxY) maxY = y;
+            if (y < minY) minY = y;
+            
+            vertices[i + 1] = new Vector3(x, y);
         }
 
+        //triangles
         for (int i = 0; i < count - 1; i++)
         {
             triangles[i * 3] = 0;
@@ -50,15 +75,25 @@ public class RadarDrawer
         triangles[3 * count - 2] = count;
         triangles[3 * count - 1] = 1;
 
+        float boundsX = Mathf.Abs(minX) + Mathf.Abs(maxX);
+        float boundsY = Mathf.Abs(minY) + Mathf.Abs(maxY);
+        
+        //UVs
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            uvs[i] = new Vector2(vertices[i].x / boundsX * textureTiling.x - (textureOffset.x + 0.5f), 
+                vertices[i].y / boundsY * textureTiling.y - (textureOffset.y + 0.5f));
+        }
+
         Mesh mesh = new Mesh
         {
             vertices = vertices,
-            uv = uv,
+            uv = uvs,
             triangles = triangles
         };
-
+        
         canvasRenderer.SetMesh(mesh);
-        canvasRenderer.SetMaterial(material, null);
+        canvasRenderer.SetMaterial(material, texture);
     }
 
     private float GetRadarItemsMaxValue()

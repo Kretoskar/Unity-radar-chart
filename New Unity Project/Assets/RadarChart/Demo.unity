@@ -541,6 +541,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: e76587d38a33089429e773e31f8096a6, type: 2}
+  texture: {fileID: 2800000, guid: 7801804018a7dcf42abb827444e18660, type: 3}
+  radius: 100
+  textureTiling: {x: 1, y: 1}
+  textureOffset: {x: 0, y: 0}
   radarItems:
   - name: abc
     description: 
@@ -557,7 +561,6 @@ MonoBehaviour:
   - name: ghi
     description: 
     value: 10
-  radius: 100
   canvasRenderer: {fileID: 976625092}
 --- !u!222 &976625092
 CanvasRenderer:
