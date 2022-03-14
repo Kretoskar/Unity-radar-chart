@@ -15,9 +15,11 @@ public class RadarDrawer
     private Vector2 textureTiling;
     private Vector2 textureOffset;
     private bool isGradient;
+    private float startRot;
     
+    //TODO: Gównianie wielki 
     public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, float radius, Material material,
-        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset, bool isGradient)
+        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset, bool isGradient, float startRot)
     {
         this.material = material;
         this.canvasRenderer = canvasRenderer;
@@ -27,6 +29,7 @@ public class RadarDrawer
         this.textureTiling = textureTiling;
         this.textureOffset = textureOffset;
         this.isGradient = isGradient;
+        this.startRot = startRot;
     }
     
     public void Draw()
@@ -47,10 +50,12 @@ public class RadarDrawer
 
         //vertices
         vertices[0] = Vector3.zero;
+
+        startRot *= Mathf.Deg2Rad;
         
         for (int i = 0; i < count; i++)
         {
-            float newAngle = angle * i;
+            float newAngle = angle * i + startRot;
             float newRadius = radius * (radarItems[i].Value / radarItemsMaxValue);
             
             float x = newRadius * Mathf.Cos(newAngle);
