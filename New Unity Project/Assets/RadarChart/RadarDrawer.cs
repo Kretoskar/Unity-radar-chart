@@ -16,10 +16,11 @@ public class RadarDrawer
     private Vector2 textureOffset;
     private bool isGradient;
     private float startRot;
-    
+    private bool scaleBounds;
+
     //TODO: Gównianie wielki 
     public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, float radius, Material material,
-        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset, bool isGradient, float startRot)
+        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset, bool isGradient, float startRot, bool scaleBounds)
     {
         this.material = material;
         this.canvasRenderer = canvasRenderer;
@@ -30,6 +31,7 @@ public class RadarDrawer
         this.textureOffset = textureOffset;
         this.isGradient = isGradient;
         this.startRot = startRot;
+        this.scaleBounds = scaleBounds;
     }
     
     public void Draw()
@@ -94,12 +96,22 @@ public class RadarDrawer
                 uvs[i] = Vector2.one;
             }
         }
-        else
+        
+        //tutaj te boundsy trzeba ogarnąć
+        else if(scaleBounds)
         {
             for (int i = 0; i < vertices.Length; i++)
             {
                 uvs[i] = new Vector2(vertices[i].x / boundsX * textureTiling.x - (textureOffset.x),
                     vertices[i].y / boundsY * textureTiling.y - (textureOffset.y));
+            }
+        }
+        else
+        {
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                uvs[i] = new Vector2(vertices[i].x / radius * (textureTiling.x - .5f) - .5f + textureOffset.x,
+                    vertices[i].y / radius * (textureTiling.y - .5f) - .5f + textureOffset.y);
             }
         }
 
