@@ -10,12 +10,12 @@ public class RadarDrawer
     private CanvasRenderer canvasRenderer;
     private List<RadarItem> radarItems;
     private RadarStyle style;
-
-    //TODO: Gównianie wielki 
+    
     public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, RadarStyle style)
     {
         this.canvasRenderer = canvasRenderer;
         this.radarItems = radarItems;
+        this.style = style;
     }
     
     public void Draw()
@@ -42,7 +42,7 @@ public class RadarDrawer
         for (int i = 0; i < count; i++)
         {
             float newAngle = angle * i + startRotRad;
-            float newRadius = style.Radius * (radarItems[i].Value / radarItemsMaxValue);
+            float newRadius = style.Radius * (Mathf.Max(0, radarItems[i].Value) / radarItemsMaxValue);
             
             float x = newRadius * Mathf.Cos(newAngle);
             float y = newRadius * Mathf.Sin(newAngle);

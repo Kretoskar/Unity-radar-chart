@@ -574,30 +574,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c7645b47b7a764499343cb867e8882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: e76587d38a33089429e773e31f8096a6, type: 2}
-  texture: {fileID: 2800000, guid: 7801804018a7dcf42abb827444e18660, type: 3}
-  radius: 300
-  textureTiling: {x: 1, y: 1}
-  textureOffset: {x: 0, y: 0}
-  isGradient: 0
-  startRot: 0
-  scaleBounds: 0
+  style: {fileID: 11400000, guid: 67bb697fd68c0d74f8dd57fb87c6b5ee, type: 2}
   radarItems:
   - name: abc
     description: 
-    value: 10
+    val: 5
   - name: def
     description: 
-    value: 10
+    val: 4
   - name: ghi
     description: 
-    value: 16
+    val: 6
   - name: ghi
     description: 
-    value: 10
+    val: 2
   - name: ghi
     description: 
-    value: 10
+    val: 5
   canvasRenderer: {fileID: 976625092}
 --- !u!222 &976625092
 CanvasRenderer:
