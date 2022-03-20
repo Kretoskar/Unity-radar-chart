@@ -8,10 +8,15 @@ namespace RadarChart
     {
         [SerializeField] private string name;
         [SerializeField] private string description;
-        [SerializeField] private int value;
+        [SerializeField] private int val;
 
         public string Name => name;
         public string Description => description;
-        public int Value => value;
+
+        public int Value
+        {
+            get => val;
+            set => val = value;
+        }
     }
 }

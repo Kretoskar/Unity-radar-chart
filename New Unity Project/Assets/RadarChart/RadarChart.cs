@@ -30,5 +30,15 @@ namespace RadarChart
                 texture, textureTiling, textureOffset, isGradient, startRot, scaleBounds);
             radarDrawer.Draw();
         }
+
+        public void SetStat(string id, int val)
+        {
+            for (var i = 0; i < radarItems.Count; i++)
+            {
+                var radarItem = radarItems[i];
+                if (radarItem.Name.Equals(id))
+                    radarItem.Value = val;
+            }
+        }
     }
 }
