@@ -7,14 +7,7 @@ namespace RadarChart
     [RequireComponent(typeof(CanvasRenderer))]
     public class RadarChart : MonoBehaviour
     {
-        [SerializeField] private Material material;
-        [SerializeField] private Texture2D texture;
-        [SerializeField] private float radius = 1;
-        [SerializeField] private Vector2 textureTiling = Vector2.one;
-        [SerializeField] private Vector2 textureOffset;
-        [SerializeField] private bool isGradient;
-        [SerializeField] private float startRot;
-        [SerializeField] private bool scaleBounds = false;
+        [SerializeField] private RadarStyle style;
         [SerializeField] private List<RadarItem> radarItems;
 
         [SerializeField, HideInInspector] private CanvasRenderer canvasRenderer;
@@ -26,8 +19,7 @@ namespace RadarChart
 
         private void Update()
         {
-            RadarDrawer radarDrawer = new RadarDrawer(canvasRenderer, radarItems, radius, material, 
-                texture, textureTiling, textureOffset, isGradient, startRot, scaleBounds);
+            RadarDrawer radarDrawer = new RadarDrawer(canvasRenderer, radarItems, style);
             radarDrawer.Draw();
         }
 

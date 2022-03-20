@@ -7,31 +7,15 @@ using UnityEngine;
 
 public class RadarDrawer
 {
-    private Material material;
-    private Texture2D texture;
     private CanvasRenderer canvasRenderer;
     private List<RadarItem> radarItems;
-    private float radius;
-    private Vector2 textureTiling;
-    private Vector2 textureOffset;
-    private bool isGradient;
-    private float startRot;
-    private bool scaleBounds;
+    private RadarStyle style;
 
     //TODO: Gównianie wielki 
-    public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, float radius, Material material,
-        Texture2D texture, Vector2 textureTiling, Vector2 textureOffset, bool isGradient, float startRot, bool scaleBounds)
+    public RadarDrawer(CanvasRenderer canvasRenderer, List<RadarItem> radarItems, RadarStyle style)
     {
-        this.material = material;
         this.canvasRenderer = canvasRenderer;
         this.radarItems = radarItems;
-        this.radius = radius;
-        this.texture = texture;
-        this.textureTiling = textureTiling;
-        this.textureOffset = textureOffset;
-        this.isGradient = isGradient;
-        this.startRot = startRot;
-        this.scaleBounds = scaleBounds;
     }
     
     public void Draw()
@@ -53,12 +37,12 @@ public class RadarDrawer
         //vertices
         vertices[0] = Vector3.zero;
 
-        startRot *= Mathf.Deg2Rad;
+        float startRotRad = style.StartRot * Mathf.Deg2Rad;
         
         for (int i = 0; i < count; i++)
         {
-            float newAngle = angle * i + startRot;
-            float newRadius = radius * (radarItems[i].Value / radarItemsMaxValue);
+            float newAngle = angle * i + startRotRad;
+            float newRadius = style.Radius * (radarItems[i].Value / radarItemsMaxValue);
             
             float x = newRadius * Mathf.Cos(newAngle);
             float y = newRadius * Mathf.Sin(newAngle);
@@ -88,7 +72,7 @@ public class RadarDrawer
         float boundsY = Mathf.Abs(minY) + Mathf.Abs(maxY);
 
         //UVs
-        if (isGradient)
+        if (style.IsGradient)
         {
             uvs[0] = Vector2.zero;
             for (int i = 1; i < uvs.Length; i++)
@@ -96,22 +80,20 @@ public class RadarDrawer
                 uvs[i] = Vector2.one;
             }
         }
-        
-        //tutaj te boundsy trzeba ogarnąć
-        else if(scaleBounds)
+        else if(style.ScaleBounds)
         {
             for (int i = 0; i < vertices.Length; i++)
             {
-                uvs[i] = new Vector2(vertices[i].x / boundsX * textureTiling.x - (textureOffset.x),
-                    vertices[i].y / boundsY * textureTiling.y - (textureOffset.y));
+                uvs[i] = new Vector2(vertices[i].x / boundsX * style.TextureTiling.x - (style.TextureOffset.x),
+                    vertices[i].y / boundsY * style.TextureTiling.y - (style.TextureOffset.y));
             }
         }
         else
         {
             for (int i = 0; i < vertices.Length; i++)
             {
-                uvs[i] = new Vector2(vertices[i].x / radius * (textureTiling.x - .5f) - .5f + textureOffset.x,
-                    vertices[i].y / radius * (textureTiling.y - .5f) - .5f + textureOffset.y);
+                uvs[i] = new Vector2(vertices[i].x / style.Radius * (style.TextureTiling.x - .5f) - .5f + style.TextureOffset.x,
+                    vertices[i].y / style.Radius * (style.TextureTiling.y - .5f) - .5f + style.TextureOffset.y);
             }
         }
 
@@ -123,7 +105,7 @@ public class RadarDrawer
         };
         
         canvasRenderer.SetMesh(mesh);
-        canvasRenderer.SetMaterial(material, texture);
+        canvasRenderer.SetMaterial(style.Material, style.Texture);
     }
 
     private float GetRadarItemsMaxValue()
